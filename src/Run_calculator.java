@@ -1,3 +1,5 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class Run_calculator {
@@ -7,17 +9,19 @@ public class Run_calculator {
                 //Program info
 
         System.out.println("Программа может выполняться в двух режимах:");
-        System.out.println("1 - Калькулятор, то есть складывать/вычитать/умножать/делить два дробных числа введённых пользователем.");
+        System.out.println("1 - Калькулятор с авто округлением до 4 знака после запятой (Доступные операции: складывание/вычитание/умножение/деление двух дробных чисел введённых пользователем.");
         System.out.println("2 - Поиск максимального(по длинне) слова в массиве. Размерность массива задаётся пользователем");
 
                 //Var
 
+        float first_val = 0, second_val = 0, rezult = 0; //Для дробных значений пользоваиеля
         int to_print_counter;
         int counter_i; //Счетчики
         int array_bound = 0; //Граница массива
         boolean succes_flag = false; //Флаг выполнения
         String thread_choice; //Строка куда запихиваем выбор пользователя
         String max_len = null; //Для строки с максимальной длинной
+        String action_choice = null; //Для выбора арифметического действия
 
 //--------------------------------------------------------------------------------------------------------------------//
                 //
@@ -57,7 +61,107 @@ public class Run_calculator {
 
         if (thread_choice.equals("1")){
 
-            
+            succes_flag = true;
+            System.out.println("Введите первую дробь:");
+
+            while (succes_flag) {
+
+                try {
+
+                    Scanner in = new Scanner(System.in);
+                    first_val = in.nextFloat();
+                    succes_flag = !succes_flag;
+
+                } catch (java.util.InputMismatchException e) {
+
+                    System.out.println("Ошибочный ввод: введите действительное число  или же проверьте что дробь введена в формате х,х");
+
+                }
+            }
+
+            succes_flag = true;
+            System.out.println("Введите вторую дробь:");
+
+            while (succes_flag) {
+
+                try {
+
+                    Scanner in = new Scanner(System.in);
+                    second_val = in.nextFloat();
+                    succes_flag = !succes_flag;
+
+                    if (second_val == 0){
+
+                        System.out.println("Второе значение = 0. Операция деления будет нелоступна!");
+
+                    }
+
+                } catch (java.util.InputMismatchException e) {
+
+                    System.out.println("Ошибочный ввод: введите действительное число или же проверьте что дробь введена в формате х,х");
+
+                }
+            }
+
+            System.out.println("Выберите арифметическое действие из доступных введя его символ:");
+            System.out.println("Для сложения введите +");
+            System.out.println("Для вычитания введите -");
+            System.out.println("Для умножения введите *");
+            System.out.println("Для деления введите /");
+
+            succes_flag = true;
+
+            while (succes_flag){
+
+                Scanner in = new Scanner(System.in);
+                action_choice = in.next();
+
+                succes_flag = true;
+
+                if (action_choice.equals("+")){
+
+                    rezult = first_val + second_val;
+                    succes_flag = !succes_flag;
+
+                }
+                else if (action_choice.equals("-")){
+
+                    rezult = first_val - second_val;
+                    succes_flag = !succes_flag;
+
+                }
+                else if (action_choice.equals("*")){
+
+                    rezult = first_val * second_val;
+                    succes_flag = !succes_flag;
+
+                }
+                else if ((action_choice.equals("/")) && (second_val != 0)){
+
+                    rezult = first_val / second_val;
+                    succes_flag = !succes_flag;
+
+                }
+                else if ((action_choice.equals("/")) && (second_val == 0)){
+
+                    System.out.println("Внимание! Значение второй переменной = 0. Деление не может быть выполнено корректно. Выберите другую операцию");
+
+                }
+                else{
+
+                    System.out.println("Введён некорректный символ! Повторите ввод.");
+
+                }
+            }
+
+            System.out.println("Итог операции = " + first_val + " " + action_choice + " " + second_val + " = " + rezult);
+            //rezult = rezult * 10000;
+            //rezult = Math.round(rezult);
+            //rezult = rezult / 10000;
+
+            BigDecimal rezult_n = new BigDecimal(rezult).setScale(4,RoundingMode.HALF_UP);
+
+            System.out.println("Округлённое до 4 знака после запятой значение = " + rezult_n);
 
         }
 
